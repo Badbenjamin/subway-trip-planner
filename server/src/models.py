@@ -1,21 +1,35 @@
-from flask_sqlalchemy import SQLAlchemy
+
 from sqlalchemy_serializer import SerializerMixin
-from sqlalchemy import MetaData
 from sqlalchemy.orm import validates
-from flask_bcrypt import Bcrypt
+
 from sqlalchemy.ext.hybrid import hybrid_property
 
-# metadata to fix alembic bug
-convention = {
-    "ix": "ix_%(column_0_label)s",
-    "uq": "uq_%(table_name)s_%(column_0_name)s",
-    "ck": "ck_%(table_name)s_%(constraint_name)s",
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-    "pk": "pk_%(table_name)s"
-}
+from config import db, bcrypt
 
-# init sqlalchemy object
-db = SQLAlchemy(metadata=MetaData(naming_convention=convention))
 
-# init bcrypt plugin
-bcrypt = Bcrypt()
+
+# # create engine, allows database connectivity
+# engine = create_engine(os.environ['DATABASE_URI'], echo=True)
+
+# station data from https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data
+class AllSubwayStations(db.Model, SerializerMixin):
+    __tablename__ = 'all_subway_stations'
+
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    gtfs_stop_id = db.Column(db.String)
+    station_id = db.Column(db.Integer)
+    complex_id = db.Column(db.Integer)
+    division = db.Column(db.String)
+    line = db.Column(db.String)
+    stop_name = db.Column(db.String)
+    borough = db.Column(db.String)
+    cbd = db.Column(db.Boolean)
+    daytime_routes = db.Column(db.String)
+    structure = db.Column(db.String)
+    gtfs_latitude = db.Column(db.Float)
+    gtfs_longitude = db.Column(db.Float)
+    north_direction_label = db.Column(db.String)
+    south_direction_label = db.Column(db.String)
+
+    def __repr__(self):
+         return f'<User {self.gtfs_stop_id}, {self.line}>'
