@@ -36,9 +36,5 @@ Migrate(app, db)
 
 CORS(app)
 
-
-
-
-
 # init bcrypt plugin
 bcrypt = Bcrypt()

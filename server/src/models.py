@@ -23,13 +23,24 @@ class AllSubwayStations(db.Model, SerializerMixin):
     line = db.Column(db.String)
     stop_name = db.Column(db.String)
     borough = db.Column(db.String)
-    cbd = db.Column(db.Boolean)
+    cbd = db.Column(db.String)
     daytime_routes = db.Column(db.String)
     structure = db.Column(db.String)
-    gtfs_latitude = db.Column(db.Float)
-    gtfs_longitude = db.Column(db.Float)
+    gtfs_latitude = db.Column(db.String)
+    gtfs_longitude = db.Column(db.String)
     north_direction_label = db.Column(db.String)
     south_direction_label = db.Column(db.String)
 
     def __repr__(self):
-         return f'<User {self.gtfs_stop_id}, {self.line}>'
+         return f'<Station {self.stop_name}, {self.gtfs_stop_id} {self.daytime_routes}>'
+    
+class LineGtfsEndpoint(db.Model, SerializerMixin):
+     __tablename__ = 'line_gtfs_endpoints'
+
+     id = db.Column(db.Integer, primary_key=True, nullable=False)
+     lines = db.Column(db.String)
+     endpoint = db.Column(db.String)
+
+     def __repr__(self):
+          return f'<LineGtfsEndpoint {self.lines}, {self.endpoint}>'
+
