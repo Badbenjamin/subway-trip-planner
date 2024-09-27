@@ -33,8 +33,8 @@ class Station(db.Model, SerializerMixin):
 
     station_endpoints = db.relationship('StationEndpoint', back_populates='stations')
     my_stops = db.relationship('Rider', back_populates='my_stop')
-    start_stops = db.relationship('Route', back_populates='start_stop')
-    end_stops = db.relationship('Route', back_populates='end_stop')
+    # start_stops = db.relationship('Route', back_populates='start_stop')
+    # end_stops = db.relationship('Route', back_populates='end_stop')
 
     def __repr__(self):
          return f'<Station {self.stop_name}, {self.gtfs_stop_id} {self.daytime_routes}>'
@@ -75,7 +75,7 @@ class Rider(db.Model, SerializerMixin):
     fav_subway_activity = db.Column(db.String)
     my_stop_id = db.Column(db.Integer, db.ForeignKey('stations.id')) 
 
-    my_stop = db.relationship('Station', back_populates='my_stops')
+    my_stop = db.relationship('Station', uselist=False, back_populates='my_stops')
     routes = db.relationship('Route', back_populates='rider')
 
     def __repr__(self):
@@ -88,12 +88,12 @@ class Route(db.Model, SerializerMixin):
     route_name = db.Column(db.String, nullable=False)
     route_type = db.Column(db.String)
     rider_id = db.Column(db.Integer, db.ForeignKey('riders.id'))
-    start_stop_id = db.Column(db.Integer, db.ForeignKey('stations.id'))
-    end_stop_id = db.Column(db.Integer, db.ForeignKey('stations.id'))
+    # start_stop_id = db.Column(db.Integer, db.ForeignKey('stations.id'))
+    # end_stop_id = db.Column(db.Integer, db.ForeignKey('stations.id'))
 
     rider = db.relationship('Rider', back_populates='routes')
-    start_stop = db.relationship('Station', back_populates='start_stops')
-    end_stop = db.relationship('Station', back_populates='end_stops')
+    # start_stop = db.relationship('Station', back_populates='start_stops')
+    # end_stop = db.relationship('Station', back_populates='end_stops')
 
     def __repr__(self):
           return f'<Route {self.route_name}, {self.rider}>'
