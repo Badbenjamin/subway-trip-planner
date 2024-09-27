@@ -1,45 +1,45 @@
-from models import LineGtfsEndpoint
+from models import Endpoint
 from config import app, db
 
 
 def add_endpoints():
 
-    ace = LineGtfsEndpoint(
+    ace = Endpoint(
         lines = "ACE",
         endpoint = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace"
     )
 
-    g = LineGtfsEndpoint(
+    g = Endpoint(
         lines = "G",
         endpoint = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-g"
     )
 
-    nqrw = LineGtfsEndpoint(
+    nqrw = Endpoint(
         lines = "NQRW",
         endpoint = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-nqrw"
     )
 
-    one234567 = LineGtfsEndpoint(
+    one234567 = Endpoint(
         lines = "1234567",
         endpoint = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs"
     )
 
-    bdfm = LineGtfsEndpoint(
+    bdfm = Endpoint(
         lines = "BDFM",
-        endpoint = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs"
+        endpoint = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-bdfm"
     )
 
-    jz = LineGtfsEndpoint(
+    jz = Endpoint(
         lines = "JZ",
         endpoint = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-jz"
     )
 
-    l = LineGtfsEndpoint(
+    l = Endpoint(
         lines = "L",
-        endpoint = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-jz"
+        endpoint = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-l"
     )
 
-    sir = LineGtfsEndpoint(
+    sir = Endpoint(
         lines = "SIR",
         endpoint = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-si"
     )

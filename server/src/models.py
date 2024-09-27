@@ -12,8 +12,8 @@ from config import db, bcrypt
 # engine = create_engine(os.environ['DATABASE_URI'], echo=True)
 
 # station data from https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data
-class AllSubwayStations(db.Model, SerializerMixin):
-    __tablename__ = 'all_subway_stations'
+class Station(db.Model, SerializerMixin):
+    __tablename__ = 'stations'
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     gtfs_stop_id = db.Column(db.String)
@@ -31,16 +31,69 @@ class AllSubwayStations(db.Model, SerializerMixin):
     north_direction_label = db.Column(db.String)
     south_direction_label = db.Column(db.String)
 
+    station_endpoints = db.relationship('StationEndpoint', back_populates='stations')
+    my_stops = db.relationship('Rider', back_populates='my_stop')
+    start_stops = db.relationship('Route', back_populates='start_stop')
+    end_stops = db.relationship('Route', back_populates='end_stop')
+
     def __repr__(self):
          return f'<Station {self.stop_name}, {self.gtfs_stop_id} {self.daytime_routes}>'
     
-class LineGtfsEndpoint(db.Model, SerializerMixin):
-     __tablename__ = 'line_gtfs_endpoints'
+class Endpoint(db.Model, SerializerMixin):
+     __tablename__ = 'endpoints'
 
      id = db.Column(db.Integer, primary_key=True, nullable=False)
      lines = db.Column(db.String)
      endpoint = db.Column(db.String)
 
-     def __repr__(self):
-          return f'<LineGtfsEndpoint {self.lines}, {self.endpoint}>'
+     station_endpoints = db.relationship('StationEndpoint', back_populates='endpoints')
 
+     def __repr__(self):
+          return f'<Endpoint {self.lines}, {self.endpoint}>'
+
+class StationEndpoint(db.Model, SerializerMixin):
+    __tablename__ = 'station_endpoints'
+
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    route = db.Column(db.String)
+    station_name = db.Column(db.String)
+    station_id = db.Column(db.Integer, db.ForeignKey('stations.id'), nullable=False)
+    endpoint_id = db.Column(db.Integer, db.ForeignKey('endpoints.id'), nullable=False)
+
+    stations = db.relationship('Station', back_populates='station_endpoints')
+    endpoints = db.relationship('Endpoint', back_populates='station_endpoints')
+
+    def __repr__(self):
+          return f'<StationEndpoint {self.station_id}, {self.route}, {self.station_name}, {self.endpoint_id}>'
+
+class Rider(db.Model, SerializerMixin):
+    __tablename__ = "riders"
+
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    username = db.Column(db.String, nullable=False)
+    _password_hash = db.Column(db.String)
+    fav_subway_activity = db.Column(db.String)
+    my_stop_id = db.Column(db.Integer, db.ForeignKey('stations.id')) 
+
+    my_stop = db.relationship('Station', back_populates='my_stops')
+    routes = db.relationship('Route', back_populates='rider')
+
+    def __repr__(self):
+          return f'<Rider {self.username}, {self.my_stop}>'
+    
+class Route(db.Model, SerializerMixin):
+    __tablename__ = "routes"
+
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    route_name = db.Column(db.String, nullable=False)
+    route_type = db.Column(db.String)
+    rider_id = db.Column(db.Integer, db.ForeignKey('riders.id'))
+    start_stop_id = db.Column(db.Integer, db.ForeignKey('stations.id'))
+    end_stop_id = db.Column(db.Integer, db.ForeignKey('stations.id'))
+
+    rider = db.relationship('Rider', back_populates='routes')
+    start_stop = db.relationship('Station', back_populates='start_stops')
+    end_stop = db.relationship('Station', back_populates='end_stops')
+
+    def __repr__(self):
+          return f'<Route {self.route_name}, {self.rider}>'

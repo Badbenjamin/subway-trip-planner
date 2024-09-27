@@ -1,8 +1,7 @@
-from models import AllSubwayStations, db
-from config import app
+from models import Station
+from config import app, db
 import csv
 
-# what is app context?
 with app.app_context():
     print('adding stations...')
     stations=[]
@@ -11,8 +10,7 @@ with app.app_context():
         with open(csv_file, mode='r') as file:
             csvFile = csv.reader(file)
             for lines in csvFile:
-                # print(lines)
-                station = AllSubwayStations(
+                station = Station(
                     gtfs_stop_id = lines[0],
                     station_id = lines[1],
                     complex_id = lines[2],
@@ -28,10 +26,8 @@ with app.app_context():
                     north_direction_label = lines[12],
                     south_direction_label = lines[13],
                 )
-                # print(station)
                 stations.append(station)
     csv_to_db('subway_files/MTA_Subway_Stations_20240906.csv')
-    # print(stations)
     db.session.add_all(stations[1:])
     db.session.commit()
 
