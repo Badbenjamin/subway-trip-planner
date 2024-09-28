@@ -32,9 +32,11 @@ class Station(db.Model, SerializerMixin):
     south_direction_label = db.Column(db.String)
 
     station_endpoints = db.relationship('StationEndpoint', back_populates='stations')
-    my_stops = db.relationship('Rider', back_populates='my_stop')
+    # my_stops = db.relationship('Rider', back_populates='my_stop')
     # start_stops = db.relationship('Route', back_populates='start_stop')
     # end_stops = db.relationship('Route', back_populates='end_stop')
+
+    serialize_rules=['-station_endpoints.stations']
 
     def __repr__(self):
          return f'<Station {self.stop_name}, {self.gtfs_stop_id} {self.daytime_routes}>'
@@ -63,6 +65,8 @@ class StationEndpoint(db.Model, SerializerMixin):
     stations = db.relationship('Station', back_populates='station_endpoints')
     endpoints = db.relationship('Endpoint', back_populates='station_endpoints')
 
+    serialize_rules=['-stations.station_endpoints', '-endpoints.station_endpoints']
+
     def __repr__(self):
           return f'<StationEndpoint {self.station_id}, {self.route}, {self.station_name}, {self.endpoint_id}>'
 
@@ -73,10 +77,10 @@ class Rider(db.Model, SerializerMixin):
     username = db.Column(db.String, nullable=False)
     _password_hash = db.Column(db.String)
     fav_subway_activity = db.Column(db.String)
-    my_stop_id = db.Column(db.Integer, db.ForeignKey('stations.id')) 
+    # my_stop_id = db.Column(db.Integer, db.ForeignKey('stations.id')) 
 
-    my_stop = db.relationship('Station', uselist=False, back_populates='my_stops')
-    routes = db.relationship('Route', back_populates='rider')
+    # my_stop = db.relationship('Station', uselist=False, back_populates='my_stops')
+    # routes = db.relationship('Route', back_populates='rider')
 
     def __repr__(self):
           return f'<Rider {self.username}, {self.my_stop}>'
@@ -87,11 +91,11 @@ class Route(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     route_name = db.Column(db.String, nullable=False)
     route_type = db.Column(db.String)
-    rider_id = db.Column(db.Integer, db.ForeignKey('riders.id'))
+    # rider_id = db.Column(db.Integer, db.ForeignKey('riders.id'))
     # start_stop_id = db.Column(db.Integer, db.ForeignKey('stations.id'))
     # end_stop_id = db.Column(db.Integer, db.ForeignKey('stations.id'))
 
-    rider = db.relationship('Rider', back_populates='routes')
+    # rider = db.relationship('Rider', back_populates='routes')
     # start_stop = db.relationship('Station', back_populates='start_stops')
     # end_stop = db.relationship('Station', back_populates='end_stops')
 

@@ -9,10 +9,10 @@ from models import Station
 def root():
     return '<h1>welcome 2 da train app</h>'
 
-@app.route('/stations')
+@app.route('/api/stations')
 def get_all_stations():
     # stations = AllSubwayStations.query.all()
-    return [station.to_dict() for station in Station.query.all()]
+    return [station.to_dict() for station in Station.query.all()], 200
 
 @app.route('/station_name/<string:station_id>')
 def get_station(station_id):
