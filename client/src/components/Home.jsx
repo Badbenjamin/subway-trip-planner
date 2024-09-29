@@ -1,10 +1,10 @@
-import StationSearch from "./StationSearch"
+import JourneyPlanner from "./JourneyPlanner"
 
 function Home() {
 
     return (
         <>
-            <StationSearch />
+            <JourneyPlanner />
         </>
     )
 }
