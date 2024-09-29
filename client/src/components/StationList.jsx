@@ -1,11 +1,12 @@
 import Station from "./Station"
+import { useOutletContext } from "react-router-dom";
 
 function StationList({ props }) {
 
-    // console.log(props)
+    const { stations } = useOutletContext()
 
-
-    const stationComponents = props.map(station => {
+    console.log(stations)
+    const stationComponents = stations.map(station => {
         return <Station key={station.id} station={station} />
     })
 

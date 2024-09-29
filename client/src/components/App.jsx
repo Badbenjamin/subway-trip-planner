@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
+import { Outlet } from 'react-router-dom'
 import '../App.css'
-import StationSearch from './StationSearch'
+
+// import Home from './Home'
+import Header from './Header'
+import NavBar from './NavBar'
 // import { Outlet } from "react-router-dom";
 
 function App() {
@@ -22,8 +24,9 @@ function App() {
   if (stations != [])
     return (
       <>
-        <h1>SUBWAY TRIP PLANNER</h1>
-        <StationSearch props={stations} />
+        <Header />
+        <NavBar />
+        <Outlet context={{ stations: stations }} />
       </>
     )
 }

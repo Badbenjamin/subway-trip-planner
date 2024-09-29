@@ -3,16 +3,17 @@ import { useState, useEffect } from "react";
 import StationList from "./StationList";
 
 
-function StationSearch({ props }) {
+
+function StationSearch() {
 
     // const { stations } = useOutletContext()
 
-    console.log(props)
+
 
     return (
         <>
             <h1>this is the station search</h1>
-            <StationList props={props} />
+            <StationList />
         </>
 
     )
