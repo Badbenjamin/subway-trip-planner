@@ -1,10 +1,10 @@
 
 function Station({ station }) {
 
-    console.log(station)
+    // console.log(station)
 
     return (
-        <>{station.stop_name}</>
+        <div>{station.stop_name+" "+station.daytime_routes}</div>
     )
 }
 

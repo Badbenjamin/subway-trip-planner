@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 // import { useOutletContext } from "react-router-dom";
+import './Component.css'
 import StopSearch from "./StopSearch";
 
 
@@ -13,10 +14,12 @@ function JourneyPlanner() {
     return (
         <>
             <h1>Journey Planner</h1>
-            <h2>Start Station</h2>
-            <StopSearch />
-            <h2>End Station</h2>
-            <StopSearch />
+            <div class='flexbox-container'>
+                <h2>Start Station</h2>
+                <StopSearch />
+                <h2>End Station</h2>
+                <StopSearch/>
+            </div>
         </>
 
     )
