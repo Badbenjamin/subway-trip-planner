@@ -1,8 +1,5 @@
-import { StrictMode } from 'react'
-import ReactDOM from 'react-dom';
-// import { createRoot } from 'react-dom/client'
+import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-// import ReactDOM from 'react-dom/client';
 
 // import components for routes
 import Home from './components/Home.jsx'

@@ -2,7 +2,7 @@ import Station from "./Station"
 import { useOutletContext } from "react-router-dom";
 import { useState } from "react";
 
-function StopSearch({ props }) {
+function StationSearch({getStations, position}) {
 
     const { stations } = useOutletContext();
     const [searchText, setSearchText] = useState('');
@@ -11,15 +11,23 @@ function StopSearch({ props }) {
         setSearchText(e.target.value);
     }
 
+
+    function onClick(e){
+        console.log(e.target)
+    }
+    
+
+
     const filteredStations = stations.filter(station => {
         return station.stop_name.toUpperCase().includes(searchText.toUpperCase())
     })
-    console.log(filteredStations)
+    // console.log(filteredStations)
 
     // console.log(stations)
-    const stationComponents = filteredStations.map(station => {
-        return <Station key={station.id} station={station} />
+    const stationListItem = filteredStations.map(station => {
+        return <Station getStations={getStations} onClick={onClick} key={station.id} station={station} position={position}/>
     })
+
 
 
 
@@ -34,9 +42,9 @@ function StopSearch({ props }) {
                 onChange={onChange}
                 value={searchText}
             />
-            <ul>{stationComponents}</ul>
+            <ul>{stationListItem}</ul>
         </div>
     )
 }
 
-export default StopSearch
+export default StationSearch

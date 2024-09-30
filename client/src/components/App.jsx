@@ -16,7 +16,7 @@ function App() {
       .then(stationsData => setStations(stationsData))
   }, [])
 
-  console.log(stations)
+  // console.log(stations)
   if (stations == []) {
     return <>loading...</>
   }
