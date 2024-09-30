@@ -32,6 +32,8 @@ def plan_trip(start_stop_id, end_stop_id):
     endpoints = get_endpoints(start_station, end_station)
     train_data = request_train_data(endpoints)
     filtered_trains = filter_trains(train_data, start_station, end_station)
+    for train in filtered_trains:
+        print(train.trip_update.trip.trip_id)
     new_journey = {
         "start_station" : start_station.stop_name,
         "end_station" : end_station.stop_name,
@@ -56,27 +58,15 @@ def request_train_data(endpoints):
 
 # get trains where start stop is before end stop
 def filter_trains(train_data, start_station, end_station):
-    print(start_station.gtfs_stop_id)
-    print(end_station.gtfs_stop_id)
-    # stations = [start_station.gtfs_stop_id, end_station.gtfs_stop_id]
-    # pprint.pprint(train_data)
-    for train in train_data.entity:
-        filtered_trains = []
+    filtered_trains = []
+    for train in train_data.entity: 
         if train.HasField('trip_update'):
-            # this is the train
-            # pprint.pprint(train.trip_update.trip.trip_id)
             stops = []
             for stop in train.trip_update.stop_time_update:
-                # these are its stops
-                # pprint.pprint(stop.stop_id[:-1])
                 stops.append(stop.stop_id[:-1])
-            # print(train)
-            # pprint.pprint(stops)
             if start_station.gtfs_stop_id in stops and end_station.gtfs_stop_id in stops and stops.index(start_station.gtfs_stop_id) < stops.index(end_station.gtfs_stop_id):
                 filtered_trains.append(train)
-            # pprint.pprint(filtered_trains)
-        for filtered_train in filtered_trains:
-            pprint.pprint(filtered_train.trip_update.trip.trip_id)
+    return(filtered_trains)
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
