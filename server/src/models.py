@@ -101,3 +101,14 @@ class Route(db.Model, SerializerMixin):
 
     def __repr__(self):
           return f'<Route {self.route_name}, {self.rider}>'
+
+class Journey(object):
+     
+     def __init__(self, start_station, end_station, shared_stations = []):
+     
+        self.start_station = start_station
+        self.end_station = end_station
+        self.shared_stations = []
+     
+     def __repr__(self):
+          return f'<Journey {self.start_station}, {self.end_station}, {self.shared_stations}>'
