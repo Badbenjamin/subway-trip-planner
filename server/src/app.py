@@ -103,8 +103,8 @@ def sort_trains_by_arrival(trains, start_station, end_station):
         "end_station_arrival" : None,
         "route" : train.trip_update.trip.route_id,
         "last_station_name" : train.trip_update.stop_time_update[0].stop_id[:-1],
-        "last_station_departure" : train.trip_update.stop_time_update[0].departure.time
-        
+        "last_station_departure" : train.trip_update.stop_time_update[0].departure.time,
+        "direction_label" : train.trip_update.stop_time_update[0].stop_id[-1]
     }
         for stop in train.trip_update.stop_time_update:
             if stop.stop_id[:-1] == start_station.gtfs_stop_id:
@@ -119,6 +119,11 @@ def sort_trains_by_arrival(trains, start_station, end_station):
 def prep_data_for_react(sorted_trains):
     trains_for_react = []
     for train in sorted_trains:
+        print(train['direction_label'])
+        if train['direction_label'] == "N":
+            train['direction_label'] = Station.query.filter(Station.gtfs_stop_id == train['last_station_name']).first().north_direction_label
+        if train['direction_label'] == "S":
+            train['direction_label'] = Station.query.filter(Station.gtfs_stop_id == train['last_station_name']).first().south_direction_label
         train['start_station_arrival'] = str(convert_timestamp(train['start_station_arrival']))
         train['end_station_arrival'] = str(convert_timestamp(train['end_station_arrival']))
         train['last_station_departure'] = str(convert_timestamp(train['last_station_departure']))
