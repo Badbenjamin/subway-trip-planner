@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 // import { useOutletContext } from "react-router-dom";
 import './Component.css'
 import StationSearch from "./StationSearch";
+import TripInfo from "./TripInfo";
 
 
 
@@ -9,6 +10,7 @@ function JourneyPlanner() {
 
     // const { stations } = useOutletContext()
     const [journeyStations, setJourneyStations] = useState([null, null])
+    const [tripInfo, setTripInfo] = useState([])
 
     
   
@@ -30,14 +32,18 @@ function JourneyPlanner() {
         } else{
             fetch(`http://127.0.0.1:5555/api/plan_trip/${journeyStations[0].gtfs_stop_id}/${journeyStations[1].gtfs_stop_id}`)
             .then(response => response.json())
-            .then(stopData => console.log(stopData))
+            .then(stopData => setTripInfo(stopData))
         }
     }
 
+    // console.log(tripInfo)
+
     return (
         <div>
-            <h1>Journey Planner</h1>
-            <button onClick={planTrip}>Plan Trip</button>
+            <TripInfo tripInfo={tripInfo}/>
+            <div>
+                <button onClick={planTrip}>Plan Trip</button>
+            </div>
             <div className='flexbox-container'>
                 <h2>Start Station: {journeyStations[0] === null ? "" : journeyStations[0].stop_name}</h2>
                 <StationSearch getStations={getStations} position={"start"}/>
