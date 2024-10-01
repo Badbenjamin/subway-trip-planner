@@ -30,10 +30,14 @@ def get_station(station_id):
 def plan_trip(start_stop_id, end_stop_id):
     start_station = Station.query.filter(Station.gtfs_stop_id == start_stop_id).first()
     end_station = Station.query.filter(Station.gtfs_stop_id == end_stop_id).first()
+    # right now just one endpoint, maybe split into start and dest endpoints
     endpoints = get_endpoints(start_station, end_station)
     train_data = request_train_data(endpoints)
-    filtered_trains = filter_trains(train_data, start_station, end_station)
-    get_arrival(filtered_trains, start_station)
+    filtered_trains = filter_trains_for_stations(train_data, start_station, end_station)
+    current_trains = filter_for_current_trains(filtered_trains, start_station)
+    # for train in current_trains:
+    #     print("CT", train.trip_update.trip.trip_id)
+    sort_trains_by_arrival(current_trains, start_station, end_station)
     new_journey = {
         "start_station" : start_station.stop_name,
         "end_station" : end_station.stop_name,
@@ -50,7 +54,7 @@ def get_endpoints(start_station, end_station):
         endpoints.append(endpoint.endpoints.endpoint)
     return(set(endpoints))
 
-# maybe append endpoints to list?
+# maybe append endpoints to list? sort by start station and end station? for when a transfer exitsts.
 def request_train_data(endpoints):
     for endpoint in endpoints:
         feed = gtfs_realtime_pb2.FeedMessage()
@@ -59,14 +63,15 @@ def request_train_data(endpoints):
         return feed
 
 # get trains where start stop is before end stop
-def filter_trains(train_data, start_station, end_station):
+def filter_trains_for_stations(train_data, start_station, end_station):
     filtered_trains = []
     for train in train_data.entity: 
         if train.HasField('trip_update'):
             stops = []
+            # stops list contains each trains stop array. used to determine if start stop is before end stop
             for stop in train.trip_update.stop_time_update:
                 stops.append(stop.stop_id[:-1])
-            if start_station.gtfs_stop_id in stops and end_station.gtfs_stop_id in stops and stops.index(start_station.gtfs_stop_id) < stops.index(end_station.gtfs_stop_id):
+            if (start_station.gtfs_stop_id in stops and end_station.gtfs_stop_id in stops and stops.index(start_station.gtfs_stop_id) < stops.index(end_station.gtfs_stop_id)):
                 filtered_trains.append(train)
     return(filtered_trains)
 
@@ -83,23 +88,44 @@ def time_difference(first_time, second_time):
     return detla_time
 
 # should return some sort of arrival time value to be storted in next_arrival_time function
-def get_arrival(trains, station):
-    print(ct)
+# maybe combine with filter for stations later....
+def filter_for_current_trains(trains, start_station):
     filtered_trains = []
-    print(station.gtfs_stop_id)
-    # filter for start station arrival time
     for train in trains:
-        # this is the train
-        # print(train.trip_update.trip.trip_id)
         for stop in train.trip_update.stop_time_update:
             # Filter for station and arrival time in future
-            if stop.stop_id[:-1] == station.gtfs_stop_id and time_difference(ct, convert_timestamp(stop.arrival.time)) >= convert_seconds(0):
-                # print(train.trip_update.trip.trip_id)
-                # print(convert_timestamp(stop.arrival.time))
+            if stop.stop_id[:-1] == start_station.gtfs_stop_id and time_difference(ct, convert_timestamp(stop.arrival.time)) >= convert_seconds(0):
                 filtered_trains.append(train)
-    print(filtered_trains[0].trip_update.trip.trip_id)
     return filtered_trains
             
+def sort_trains_by_arrival(trains, start_station, end_station):
+    # this function needs to create an object with a start arrival, dest arrival, and the relevant train object
+    # trains will be sorted into a list based on destination arrival time
+    trains_with_arrival = []
+    for train in trains:
+        train_with_arrival = {
+        "start_station_arrival" : None,
+        "end_station_arrival" : None,
+        "train" : train.trip_update.trip.trip_id
+    }
+        # print(train.trip_update.trip.trip_id)
+        for stop in train.trip_update.stop_time_update:
+            if stop.stop_id[:-1] == start_station.gtfs_stop_id:
+                train_with_arrival['start_station_arrival'] = stop.arrival.time
+            elif stop.stop_id[:-1] == end_station.gtfs_stop_id:
+                train_with_arrival['end_station_arrival'] = stop.arrival.time
+        trains_with_arrival.append(train_with_arrival)
+    # print(trains_with_arrival)
+    # sort trains by dest arrival time
+    
+    # sorted(iterable, cmp=None, key=None, reverse=False)
+    trains_by_dest_arrival =  sorted(trains_with_arrival, key=lambda d: d['end_station_arrival'])
+    # print(trains_by_dest_arrival)
+    for train in trains_by_dest_arrival:
+        print(train['train'])
+        print(convert_timestamp(train['start_station_arrival']))
+        print(convert_timestamp(train['end_station_arrival']))
+    
 
 
 
