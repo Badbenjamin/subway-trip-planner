@@ -35,15 +35,10 @@ def plan_trip(start_stop_id, end_stop_id):
     train_data = request_train_data(endpoints)
     filtered_trains = filter_trains_for_stations(train_data, start_station, end_station)
     current_trains = filter_for_current_trains(filtered_trains, start_station)
-    # for train in current_trains:
-    #     print("CT", train.trip_update.trip.trip_id)
-    sort_trains_by_arrival(current_trains, start_station, end_station)
-    new_journey = {
-        "start_station" : start_station.stop_name,
-        "end_station" : end_station.stop_name,
-        "shared_stations" : []
-    }
-    return new_journey, 200
+    sorted_trains = sort_trains_by_arrival(current_trains, start_station, end_station)
+    trains_for_react = prep_data_for_react(sorted_trains)
+    # print(trains_for_react)
+    return trains_for_react, 200
 
 # maybe make two lists of endpoints for start and end?
 def get_endpoints(start_station, end_station):
@@ -87,7 +82,6 @@ def time_difference(first_time, second_time):
     detla_time = second_time - first_time
     return detla_time
 
-# should return some sort of arrival time value to be storted in next_arrival_time function
 # maybe combine with filter for stations later....
 def filter_for_current_trains(trains, start_station):
     filtered_trains = []
@@ -99,34 +93,38 @@ def filter_for_current_trains(trains, start_station):
     return filtered_trains
             
 def sort_trains_by_arrival(trains, start_station, end_station):
-    # this function needs to create an object with a start arrival, dest arrival, and the relevant train object
     # trains will be sorted into a list based on destination arrival time
     trains_with_arrival = []
     for train in trains:
         train_with_arrival = {
+        "start_station_name" : start_station.stop_name,
         "start_station_arrival" : None,
+        "end_station_name" : end_station.stop_name,
         "end_station_arrival" : None,
-        "train" : train.trip_update.trip.trip_id
+        "route" : train.trip_update.trip.route_id,
+        "last_station_name" : train.trip_update.stop_time_update[0].stop_id[:-1],
+        "last_station_departure" : train.trip_update.stop_time_update[0].departure.time
+        
     }
-        # print(train.trip_update.trip.trip_id)
         for stop in train.trip_update.stop_time_update:
             if stop.stop_id[:-1] == start_station.gtfs_stop_id:
                 train_with_arrival['start_station_arrival'] = stop.arrival.time
             elif stop.stop_id[:-1] == end_station.gtfs_stop_id:
                 train_with_arrival['end_station_arrival'] = stop.arrival.time
         trains_with_arrival.append(train_with_arrival)
-    # print(trains_with_arrival)
-    # sort trains by dest arrival time
-    
     # sorted(iterable, cmp=None, key=None, reverse=False)
     trains_by_dest_arrival =  sorted(trains_with_arrival, key=lambda d: d['end_station_arrival'])
-    # print(trains_by_dest_arrival)
-    for train in trains_by_dest_arrival:
-        print(train['train'])
-        print(convert_timestamp(train['start_station_arrival']))
-        print(convert_timestamp(train['end_station_arrival']))
+    return trains_by_dest_arrival
     
-
+def prep_data_for_react(sorted_trains):
+    trains_for_react = []
+    for train in sorted_trains:
+        train['start_station_arrival'] = str(convert_timestamp(train['start_station_arrival']))
+        train['end_station_arrival'] = str(convert_timestamp(train['end_station_arrival']))
+        train['last_station_departure'] = str(convert_timestamp(train['last_station_departure']))
+        train['last_station_name'] = Station.query.filter(Station.gtfs_stop_id == train['last_station_name']).first().stop_name
+        trains_for_react.append(train)
+    return trains_for_react
 
 
 
