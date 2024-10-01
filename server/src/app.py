@@ -10,6 +10,7 @@ import requests
 from datetime import datetime, timedelta
 from google.transit import gtfs_realtime_pb2
 
+ct = datetime.now()
 
 @app.route('/')
 def root():
@@ -32,8 +33,7 @@ def plan_trip(start_stop_id, end_stop_id):
     endpoints = get_endpoints(start_station, end_station)
     train_data = request_train_data(endpoints)
     filtered_trains = filter_trains(train_data, start_station, end_station)
-    for train in filtered_trains:
-        print(train.trip_update.trip.trip_id)
+    get_arrival(filtered_trains, start_station)
     new_journey = {
         "start_station" : start_station.stop_name,
         "end_station" : end_station.stop_name,
@@ -41,6 +41,7 @@ def plan_trip(start_stop_id, end_stop_id):
     }
     return new_journey, 200
 
+# maybe make two lists of endpoints for start and end?
 def get_endpoints(start_station, end_station):
     endpoints = []
     for endpoint in start_station.station_endpoints:
@@ -49,6 +50,7 @@ def get_endpoints(start_station, end_station):
         endpoints.append(endpoint.endpoints.endpoint)
     return(set(endpoints))
 
+# maybe append endpoints to list?
 def request_train_data(endpoints):
     for endpoint in endpoints:
         feed = gtfs_realtime_pb2.FeedMessage()
@@ -67,6 +69,42 @@ def filter_trains(train_data, start_station, end_station):
             if start_station.gtfs_stop_id in stops and end_station.gtfs_stop_id in stops and stops.index(start_station.gtfs_stop_id) < stops.index(end_station.gtfs_stop_id):
                 filtered_trains.append(train)
     return(filtered_trains)
+
+# convert 10 digit POSIX timestamp used in feed to readable format
+def convert_timestamp(timestamp):
+    return datetime.fromtimestamp(timestamp)
+
+# converts seconds to delta time type
+def convert_seconds(seconds):
+    return timedelta(seconds = seconds)
+
+def time_difference(first_time, second_time):
+    detla_time = second_time - first_time
+    return detla_time
+
+# should return some sort of arrival time value to be storted in next_arrival_time function
+def get_arrival(trains, station):
+    print(ct)
+    filtered_trains = []
+    print(station.gtfs_stop_id)
+    # filter for start station arrival time
+    for train in trains:
+        # this is the train
+        # print(train.trip_update.trip.trip_id)
+        for stop in train.trip_update.stop_time_update:
+            # Filter for station and arrival time in future
+            if stop.stop_id[:-1] == station.gtfs_stop_id and time_difference(ct, convert_timestamp(stop.arrival.time)) >= convert_seconds(0):
+                # print(train.trip_update.trip.trip_id)
+                # print(convert_timestamp(stop.arrival.time))
+                filtered_trains.append(train)
+    print(filtered_trains[0].trip_update.trip.trip_id)
+    return filtered_trains
+            
+
+
+
+
+
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
