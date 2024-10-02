@@ -32,7 +32,7 @@ class Station(db.Model, SerializerMixin):
     south_direction_label = db.Column(db.String)
 
     station_endpoints = db.relationship('StationEndpoint', back_populates='stations')
-    # my_stops = db.relationship('Rider', back_populates='my_stop')
+    my_stops = db.relationship('Rider', back_populates='my_stop')
     # start_stops = db.relationship('Route', back_populates='start_stop')
     # end_stops = db.relationship('Route', back_populates='end_stop')
 
@@ -77,9 +77,9 @@ class Rider(db.Model, SerializerMixin):
     username = db.Column(db.String, nullable=False)
     _password_hash = db.Column(db.String)
     fav_subway_activity = db.Column(db.String)
-    # my_stop_id = db.Column(db.Integer, db.ForeignKey('stations.id')) 
+    my_stop_id = db.Column(db.Integer, db.ForeignKey('stations.id')) 
 
-    # my_stop = db.relationship('Station', uselist=False, back_populates='my_stops')
+    my_stop = db.relationship('Station', uselist=False, back_populates='my_stops')
     # routes = db.relationship('Route', back_populates='rider')
 
     def __repr__(self):

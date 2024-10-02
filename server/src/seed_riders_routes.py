@@ -10,8 +10,7 @@ def add_riders():
     _password_hash = None,
     fav_subway_activity = "Listening to loud music.",
 
-    my_stop = Station.query.first(),
-    routes = None
+    my_stop = Station.query.first()
     )
 
     sally = Rider(
@@ -19,8 +18,7 @@ def add_riders():
     _password_hash = None,
     fav_subway_activity = "Fighting with boyfriend.",
 
-    my_stop = Station.query.first(),
-    routes = None
+    my_stop = Station.query.first()
     )
 
     sammy = Rider(
@@ -28,8 +26,7 @@ def add_riders():
     _password_hash = None,
     fav_subway_activity = "Smoking cigs.",
 
-    my_stop = Station.query.first(),
-    routes = None
+    my_stop = Station.query.first()
     )
     print('riders')
     riders = [tommy, sally, sammy]
