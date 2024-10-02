@@ -12,14 +12,15 @@ function JourneyPlanner() {
     const [journeyStations, setJourneyStations] = useState([null, null])
     const [tripInfo, setTripInfo] = useState([])
 
-    
+    // console.log(journeyStations)
   
     function getStations(station, position){
+        console.log(station.pos.position)
         const journey = [...journeyStations]
-        if (position === 'start'){
-            journey[0] = station;
-        } else if (position == 'end'){
-            journey[1] = station;
+        if (station.pos.position === 'start'){
+            journey[0] = station.value;
+        } else if (station.pos.position == 'end'){
+            journey[1] = station.value;
         }
         
     setJourneyStations(journey)

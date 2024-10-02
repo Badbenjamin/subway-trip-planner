@@ -1,48 +1,49 @@
-import Station from "./Station"
 import { useOutletContext } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Select from 'react-select'
+import './Component.css'
 
 function StationSearch({getStations, position}) {
 
     const { stations } = useOutletContext();
     const [searchText, setSearchText] = useState('');
+    const [selectedOption, setSelectedOption] = useState(null)
 
-    function onChange(e){
-        setSearchText(e.target.value);
+    const customStyles = {
+        control : (provided) => ({
+            ...provided,
+            backgroundColor: 'white',
+            fontWeight: 'bold',
+            
+        }),
+        option: (provided, state) => ({
+            ...provided,
+            color: 'black',
+            backgroundColor: state.isSelected ? 'lightblue' : 'white',
+        }),
     }
 
-
-    function onClick(e){
-        console.log(e.target)
+    const handleChange = (option) => {
+        setSelectedOption(option);
+        getStations(option, position)
     }
-    
 
+    const optionsArray = []
 
-    const filteredStations = stations.filter(station => {
-        return station.stop_name.toUpperCase().includes(searchText.toUpperCase())
-    })
-    // console.log(filteredStations)
-
-    // console.log(stations)
-    const stationListItem = filteredStations.map(station => {
-        return <Station getStations={getStations} onClick={onClick} key={station.id} station={station} position={position}/>
-    })
-
-
-
+    for (const station of stations){
+        const stationObj = { value : station, label: `${station.stop_name+" "+station.daytime_routes}`, pos: {position}};
+        optionsArray.push(stationObj);
+    }
+    // console.log(optionsArray)
 
     return (
-        <div className="searchBar">
-            <label htmlFor="search"></label>
-            <input
-                name="q"
-                type="text"
-                id="search"
-                placeholder="Pick a station..."
-                onChange={onChange}
-                value={searchText}
+        <div>
+            <Select
+                styles={customStyles}
+                value={selectedOption}
+                onChange={handleChange}
+                options={optionsArray}
             />
-            <ul>{stationListItem}</ul>
         </div>
     )
 }

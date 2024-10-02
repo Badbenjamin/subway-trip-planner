@@ -4,11 +4,18 @@
     border-style: dotted;
   }
 
+ h1{
+  border-style: dotted;
+  padding: 5px;
+ }
+  
 .leg-info-grid-cointainer{
+  padding: 5px;
   display: grid;
   column-gap: 50px;
   row-gap: 50px;
   border-style: dotted;
+  border-color: whitesmoke;
 }
 
 .start-station-info{
