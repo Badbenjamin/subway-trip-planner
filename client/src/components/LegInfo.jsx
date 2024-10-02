@@ -1,5 +1,5 @@
 import './Component.css'
-import Info from './Info'
+
 
 function LegInfo({tripInfo}){
 
@@ -22,7 +22,6 @@ function LegInfo({tripInfo}){
                 <div class="middle">Arrives {tripInfo[0].end_station_arrival.slice(10,-3)}</div>
                 <div class="bottom">transfer or destination</div>
             </div>
-
         </div>
     )
 }

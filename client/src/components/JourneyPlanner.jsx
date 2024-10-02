@@ -42,14 +42,14 @@ function JourneyPlanner() {
     return (
         <div>
             {tripInfo[0] !== undefined ? <TripInfo tripInfo={tripInfo}/> : "enter trip info"}
-            <div>
-                <button onClick={planTrip}>Plan Trip</button>
-            </div>
-            <div className='flexbox-container'>
+            <br></br>
+            <div className='journey-planner'>
                 <h2>Start Station: {journeyStations[0] === null ? "" : journeyStations[0].stop_name}</h2>
                 <StationSearch getStations={getStations} position={"start"}/>
                 <h2>End Station: {journeyStations[1] === null ? "" : journeyStations[1].stop_name}</h2>
                 <StationSearch getStations={getStations} position={"end"}/>
+                <br></br>
+                <button onClick={planTrip}>Plan Trip</button>
             </div>
         </div>
 

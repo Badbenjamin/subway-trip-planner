@@ -24,8 +24,8 @@ function App() {
   if (stations != [])
     return (
       <>
-        <Header />
         <NavBar />
+        <Header />
         <Outlet context={{ stations: stations }} />
       </>
     )

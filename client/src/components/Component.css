@@ -1,8 +1,7 @@
-.flexbox-container {
-    display: flex;
-    flex-direction: row;
-    border-style: dotted;
-  }
+.journey-planner {
+  border-style: dotted;
+  padding: 5px;
+}
 
  h1{
   border-style: dotted;
