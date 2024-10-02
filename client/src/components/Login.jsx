@@ -1,3 +1,4 @@
+import './Component.css'
 
 function Login() {
     return (

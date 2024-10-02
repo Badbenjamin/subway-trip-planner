@@ -1,12 +1,32 @@
-.flexbox-container {
-    display: flex;
-    flex-direction: row;
+.journey-planner {
     border-style: dotted;
+    padding: 5px;
   }
 
  h1{
   border-style: dotted;
   padding: 5px;
+ }
+
+ /* h2{
+  padding-top: 2px;
+  padding-bottom: 2px;
+ } */
+
+ .trip-info{
+  padding: 10px;
+ }
+
+ .station-search{
+  padding: 10px;
+  /* not working */
+ }
+
+ .plan-trip-button{
+  font-size: 20px;
+  font-weight: bold;
+  background-color: white;
+  border-radius: 5px;
  }
   
 .leg-info-grid-cointainer{

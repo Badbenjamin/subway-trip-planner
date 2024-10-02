@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import './Component.css'
 
 function TimeDate(){
 
@@ -14,7 +15,7 @@ function TimeDate(){
     });
 
     return(
-        <p>NYC {timeDate.toLocaleTimeString()}</p>
+        <h2>NYC {timeDate.toLocaleTimeString()}</h2>
     )
 }
 

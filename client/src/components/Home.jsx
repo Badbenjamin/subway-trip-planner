@@ -1,10 +1,11 @@
 import JourneyPlanner from "./JourneyPlanner"
+import './Component.css'
 
 function Home() {
 
     return (
         <>
-            <JourneyPlanner />
+            <JourneyPlanner className="journey-planner" />
         </>
     )
 }
