@@ -1,7 +1,15 @@
 
-function Login() {
+function Login({stations}) {
+
+
     return (
-        <h1>LOGIN/OUT</h1>
+        <form >
+            <label htmlFor="username">RiderName</label>
+            <input
+            type="text"
+            id="RiderName"
+            />
+        </form>
     )
 }
 

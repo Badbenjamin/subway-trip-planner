@@ -36,7 +36,7 @@ class Station(db.Model, SerializerMixin):
     # start_stops = db.relationship('Route', back_populates='start_stop')
     # end_stops = db.relationship('Route', back_populates='end_stop')
 
-    serialize_rules=['-station_endpoints.stations']
+    serialize_rules=['-station_endpoints.stations', '-my_stops.my_stop']
 
     def __repr__(self):
          return f'<Station {self.stop_name}, {self.gtfs_stop_id} {self.daytime_routes}>'
@@ -81,6 +81,8 @@ class Rider(db.Model, SerializerMixin):
 
     my_stop = db.relationship('Station', uselist=False, back_populates='my_stops')
     # routes = db.relationship('Route', back_populates='rider')
+
+    serialize_rules=['-stations.my_stops']
 
     def __repr__(self):
           return f'<Rider {self.username}, {self.my_stop}>'
