@@ -40,7 +40,7 @@ function JourneyPlanner() {
 
     return (
         <div>
-            <TripInfo tripInfo={tripInfo}/>
+            {tripInfo[0] !== undefined ? <TripInfo tripInfo={tripInfo}/> : "enter trip info"}
             <div>
                 <button onClick={planTrip}>Plan Trip</button>
             </div>

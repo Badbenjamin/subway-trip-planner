@@ -1,7 +1,6 @@
-import TimeDate from "./TimeDate"
 import { useState, useEffect } from "react"
 
-function Header() {
+function TimeDate(){
 
     const [timeDate, setTimeDate] = useState(new Date())
 
@@ -14,14 +13,9 @@ function Header() {
         }
     });
 
-
-    return (
-        <div className="site-header">
-            <h1>Subway Trip Planner</h1>
-            <TimeDate/>
-        </div>
-        
+    return(
+        <p>NYC {timeDate.toLocaleTimeString()}</p>
     )
 }
 
-export default Header
+export default TimeDate

@@ -4,4 +4,39 @@
     border-style: dotted;
   }
 
-  
+.leg-info-grid-cointainer{
+  display: grid;
+  column-gap: 50px;
+  row-gap: 50px;
+  border-style: dotted;
+}
+
+.start-station-info{
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+.middle-info{
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+
+.end-station-info{
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
+
+.top{
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+
+.middle{
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.bottom{
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
