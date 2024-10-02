@@ -1,5 +1,4 @@
 import './Component.css'
-import Info from './Info'
 
 function LegInfo({tripInfo}){
 

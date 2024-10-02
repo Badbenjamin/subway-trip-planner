@@ -3,7 +3,7 @@ from config import app
 from flask import session
 
 from config import app, db, SerializerMixin
-from models import Station, Journey
+from station import Station
 
 import pprint
 import requests
