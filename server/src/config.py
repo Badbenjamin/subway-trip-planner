@@ -34,7 +34,7 @@ db.init_app(app)
 # initialize alembic aka flask migrate
 Migrate(app, db)
 
-CORS(app)
+CORS(app, supports_credentials=True)
 
 # init bcrypt plugin
 bcrypt = Bcrypt()

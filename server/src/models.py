@@ -82,7 +82,7 @@ class Rider(db.Model, SerializerMixin):
     my_stop = db.relationship('Station', uselist=False, back_populates='my_stops')
     # routes = db.relationship('Route', back_populates='rider')
 
-    serialize_rules=['-stations.my_stops']
+    serialize_rules=['-stations.my_stops', '-my_stop.my_stops',]
 
     def __repr__(self):
           return f'<Rider {self.username}, {self.my_stop}>'
