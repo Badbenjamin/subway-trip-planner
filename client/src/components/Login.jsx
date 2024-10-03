@@ -1,15 +1,20 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 function Login() {
     const [username, setUserName] = useState('')
     const [password, setPassword] = useState('')
-
+    const navegate = useNavigate()
     
     function handleSubmit(e){
         e.preventDefault()
         const data ={
             'username' : username,
             'password' : password
+        }
+        if ((username.length() < 1) || (password.length() < 1)){
+            
+            return
         }
         fetch('http://127.0.0.1:5555/api/login', {
             method: 'POST',
@@ -21,6 +26,7 @@ function Login() {
         }).then((response) => {
             if (response.ok) {
                 console.log("login succesful")
+                navegate('/')
             } else {
                 console.log('login failed')
             }

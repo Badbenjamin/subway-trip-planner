@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 import Select from 'react-select'
 import './Component.css'
 
-function StationSearch({getStations, position}) {
+function StationSearch({getStations, position, stations}) {
 
-    const { stations } = useOutletContext();
+    // const { stations } = useOutletContext();
     const [searchText, setSearchText] = useState('');
     const [selectedOption, setSelectedOption] = useState(null)
 

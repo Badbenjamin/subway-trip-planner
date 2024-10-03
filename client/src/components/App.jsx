@@ -8,25 +8,27 @@ import NavBar from './NavBar'
 // import { Outlet } from "react-router-dom";
 
 function App() {
-  const [stations, setStations] = useState([])
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5555/api/stations")
-      .then(response => response.json())
-      .then(stationsData => setStations(stationsData))
+    fetch('/api/check_session')
+    .then((response) => {
+      if (response.ok) {
+        // console.log(response.user)
+        response.json().then((user) => setUser(user));
+      } else {
+        console.log('user is not logged in')
+      }
+    });
   }, [])
 
-  // console.log(stations)
-  if (stations == []) {
-    return <>loading...</>
-  }
+  console.log(user)
 
-  if (stations != [])
     return (
       <>
-        <NavBar />
+        <NavBar user={user}/>
         <Header />
-        <Outlet context={{ stations: stations }} />
+        <Outlet />
       </>
     )
 }

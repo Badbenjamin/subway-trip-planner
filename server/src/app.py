@@ -2,6 +2,7 @@
 from config import app
 from flask import session, request
 
+
 from config import app, db, SerializerMixin
 from models import Station, Journey, Rider
 
@@ -40,6 +41,16 @@ def login():
     session['user_id'] = rider.id
     print(session)
     return rider.to_dict(), 200
+
+@app.route('/api/check_session')
+def check_session():
+    user = Rider.query.filter(Rider.id == session['user_id']).first()
+    print('checking session')
+    if user is None:
+        return {'not logged in'}, 401
+    else:
+        return user.to_dict(), 200
+
 
 @app.route('/api/plan_trip/<string:start_stop_id>/<string:end_stop_id>')
 def plan_trip(start_stop_id, end_stop_id):

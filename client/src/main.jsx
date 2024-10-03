@@ -6,6 +6,7 @@ import Home from './components/Home.jsx'
 import App from './components/App.jsx'
 import ErrorElement from './components/ErrorElement.jsx';
 import Login from './components/Login.jsx';
+import Profile from './components/Profile.jsx';
 import './index.css'
 
 // createRoot(document.getElementById('root')).render(
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />
+      },
+      {
+        path:"/profile",
+        element: <Profile/>
       }
     ]
   }

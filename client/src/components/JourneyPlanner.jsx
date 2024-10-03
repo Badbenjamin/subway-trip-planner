@@ -6,7 +6,7 @@ import TripInfo from "./TripInfo";
 
 
 
-function JourneyPlanner() {
+function JourneyPlanner({stations}) {
 
     // const { stations } = useOutletContext()
     const [journeyStations, setJourneyStations] = useState([null, null])
@@ -45,9 +45,9 @@ function JourneyPlanner() {
             <br></br>
             <div className='journey-planner'>
                 <h2>Start Station</h2>
-                <StationSearch getStations={getStations} position={"start"}/>
+                <StationSearch stations={stations} getStations={getStations} position={"start"}/>
                 <h2>End Station</h2>
-                <StationSearch getStations={getStations} position={"end"}/>
+                <StationSearch stations={stations} getStations={getStations} position={"end"}/>
                 <br></br>
                 <button onClick={planTrip}>Plan Trip</button>
             </div>
