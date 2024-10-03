@@ -34,8 +34,8 @@ def plan_trip(start_stop_id, end_stop_id):
     endpoints = get_endpoints(start_station, end_station)
     train_data = request_train_data(endpoints)
     filtered_trains = filter_trains_for_stations(train_data, start_station, end_station)
-    current_trains = filter_for_current_trains(filtered_trains, start_station)
-    sorted_trains = sort_trains_by_arrival(current_trains, start_station, end_station)
+    current_trains = filter_for_current_trains_at_start(filtered_trains, start_station)
+    sorted_trains = sort_trains_by_arrival_at_dest(current_trains, start_station, end_station)
     trains_for_react = prep_data_for_react(sorted_trains)
     # print(trains_for_react)
     return trains_for_react, 200
@@ -83,16 +83,16 @@ def time_difference(first_time, second_time):
     return detla_time
 
 # maybe combine with filter for stations later....
-def filter_for_current_trains(trains, start_station):
+def filter_for_current_trains_at_start(trains, start_station):
     filtered_trains = []
     for train in trains:
         for stop in train.trip_update.stop_time_update:
             # Filter for station and arrival time in future
-            if stop.stop_id[:-1] == start_station.gtfs_stop_id and time_difference(ct, convert_timestamp(stop.arrival.time)) >= convert_seconds(0):
+            if stop.stop_id[:-1] == start_station.gtfs_stop_id and time_difference(ct, convert_timestamp(stop.arrival.time)) > convert_seconds(30):
                 filtered_trains.append(train)
     return filtered_trains
             
-def sort_trains_by_arrival(trains, start_station, end_station):
+def sort_trains_by_arrival_at_dest(trains, start_station, end_station):
     # trains will be sorted into a list based on destination arrival time
     trains_with_arrival = []
     for train in trains:

@@ -41,12 +41,12 @@ function JourneyPlanner() {
 
     return (
         <div>
-            {tripInfo[0] !== undefined ? <TripInfo tripInfo={tripInfo}/> : "enter trip info"}
+            {tripInfo[0] !== undefined ? <TripInfo tripInfo={tripInfo}/> : ""}
             <br></br>
             <div className='journey-planner'>
-                <h2>Start Station: {journeyStations[0] === null ? "" : journeyStations[0].stop_name}</h2>
+                <h2>Start Station</h2>
                 <StationSearch getStations={getStations} position={"start"}/>
-                <h2>End Station: {journeyStations[1] === null ? "" : journeyStations[1].stop_name}</h2>
+                <h2>End Station</h2>
                 <StationSearch getStations={getStations} position={"end"}/>
                 <br></br>
                 <button onClick={planTrip}>Plan Trip</button>
