@@ -51,6 +51,11 @@ def check_session():
     else:
         return user.to_dict(), 200
 
+@app.route('/api/logout', methods=['DELETE'])
+def logout():
+    session.pop('user_id')
+    return {}, 204
+
 
 @app.route('/api/plan_trip/<string:start_stop_id>/<string:end_stop_id>')
 def plan_trip(start_stop_id, end_stop_id):

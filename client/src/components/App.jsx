@@ -22,13 +22,13 @@ function App() {
     });
   }, [])
 
-  console.log(user)
+  // console.log(user)
 
     return (
       <>
         <NavBar user={user}/>
         <Header />
-        <Outlet />
+        <Outlet context={{user: user, setUser}}/>
       </>
     )
 }

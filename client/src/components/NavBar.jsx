@@ -4,13 +4,24 @@ function NavBar({user}) {
 
     console.log(user)
 
-    return (
+    if (!user) {
+        return (
+            <nav className="navbar">
+                <NavLink to="/" style={{ textDecoration: 'none' }}>HOME</NavLink>
+                <>      </>
+                <NavLink to="/login" style={{ textDecoration: 'none' }}>LOGIN</NavLink>
+            </nav>
+        )
+    } else if (user) {
+        return(
         <nav className="navbar">
             <NavLink to="/" style={{ textDecoration: 'none' }}>HOME</NavLink>
             <>      </>
-            <NavLink to="/login" style={{ textDecoration: 'none' }}>LOGIN</NavLink>
+            <NavLink to="/profile" style={{ textDecoration: 'none' }}>PROFILE</NavLink>
         </nav>
-    )
+        )
+    }
+    
 }
 
 export default NavBar

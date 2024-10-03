@@ -12,7 +12,7 @@ function Login() {
             'username' : username,
             'password' : password
         }
-        if ((username.length() < 1) || (password.length() < 1)){
+        if ((username.length < 1) || (password.length < 1)){
             
             return
         }
@@ -26,7 +26,9 @@ function Login() {
         }).then((response) => {
             if (response.ok) {
                 console.log("login succesful")
+                
                 navegate('/')
+                window.location.reload()
             } else {
                 console.log('login failed')
             }
