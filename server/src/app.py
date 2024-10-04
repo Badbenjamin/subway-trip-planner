@@ -56,6 +56,24 @@ def logout():
     session.pop('user_id')
     return {}, 204
 
+@app.route('/api/signup', methods=['POST'])
+def signup():
+    data = request.get_json()
+    mystop = Station.query.filter(Station.id == data.get('my_stop_id')).first()
+    # print(mystop)
+    new_rider = Rider(
+        username = data.get('username'),
+        _password_hash = data.get('password'),
+        fav_subway_activity = data.get('fav_activity'),
+        my_stop = mystop, 
+    )
+    db.session.add(new_rider)
+    db.session.commit()
+    rider = Rider.query.filter(Rider.username == data.get('username')).first()
+    session['user_id'] = rider.id
+    
+    return new_rider.to_dict(only=('username',)), 200
+
 
 @app.route('/api/plan_trip/<string:start_stop_id>/<string:end_stop_id>')
 def plan_trip(start_stop_id, end_stop_id):

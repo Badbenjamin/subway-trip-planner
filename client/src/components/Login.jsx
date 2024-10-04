@@ -41,7 +41,6 @@ function Login() {
 
     return (
         <div>
-            <h2>CREATE PROFILE</h2>
             <form className="login-form" onSubmit={handleSubmit}>
                 <label htmlFor="username">RiderName</label><br/>
                 <input

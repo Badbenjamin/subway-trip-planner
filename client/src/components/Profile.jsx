@@ -2,6 +2,7 @@ import { useOutletContext, useNavigate } from "react-router-dom"
 
 function Profile(){
     const {user, setUser} = useOutletContext()
+    const navegate = useNavigate()
     
     function handleClick(){
         fetch('/api/logout', {method: "DELETE"}).then((r) => {
