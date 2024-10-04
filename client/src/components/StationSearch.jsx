@@ -5,8 +5,6 @@ import './Component.css'
 
 function StationSearch({getStations, position, stations}) {
 
-    // const { stations } = useOutletContext();
-    const [searchText, setSearchText] = useState('');
     const [selectedOption, setSelectedOption] = useState(null)
 
     const customStyles = {

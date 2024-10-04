@@ -35,8 +35,13 @@ function Login() {
         });
     }
 
+    function handleSignUp(){
+        navegate('/signup')
+    }
+
     return (
         <div>
+            <h2>CREATE PROFILE</h2>
             <form className="login-form" onSubmit={handleSubmit}>
                 <label htmlFor="username">RiderName</label><br/>
                 <input
@@ -54,7 +59,7 @@ function Login() {
                 /><br/>
                 <input type="submit" value='LOGIN'/>
             </form>
-            <button>SIGN UP</button>
+            <button onClick={handleSignUp}>SIGN UP</button>
         </div>
        
     )
