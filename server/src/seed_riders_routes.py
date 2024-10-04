@@ -9,7 +9,7 @@ def add_riders():
 
     tommy = Rider(
     username = "TommyTrains",
-    _password_hash = "trains123",
+    password_hash = "trains123",
     fav_subway_activity = "Listening to loud music.",
 
     my_stop = Station.query.first()
@@ -17,7 +17,7 @@ def add_riders():
 
     sally = Rider(
     username = "SallySevenTrain",
-    _password_hash = "trains123",
+    password_hash = "trains123",
     fav_subway_activity = "Fighting with boyfriend.",
 
     my_stop = Station.query.first()
@@ -25,7 +25,7 @@ def add_riders():
 
     sammy = Rider(
     username = "SammySubway",
-    _password_hash = "trains123",
+    password_hash = "trains123",
     fav_subway_activity = "Smoking cigs.",
 
     my_stop = Station.query.first()

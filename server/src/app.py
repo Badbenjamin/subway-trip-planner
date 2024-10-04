@@ -38,6 +38,9 @@ def login():
     if rider is None:
         return {'error' : 'login failed'}, 401
     # authenticate here
+    if not rider.authenticate(data.get('password')):
+        return {'error' : 'login failed'}, 401
+    
     session['user_id'] = rider.id
     print(session)
     return rider.to_dict(), 200
@@ -53,6 +56,7 @@ def check_session():
 
 @app.route('/api/logout', methods=['DELETE'])
 def logout():
+    session['user_id'] = None
     session.pop('user_id')
     return {}, 204
 
@@ -63,16 +67,16 @@ def signup():
     # print(mystop)
     new_rider = Rider(
         username = data.get('username'),
-        _password_hash = data.get('password'),
+        password_hash = data.get('password'),
         fav_subway_activity = data.get('fav_activity'),
         my_stop = mystop, 
     )
     db.session.add(new_rider)
     db.session.commit()
-    rider = Rider.query.filter(Rider.username == data.get('username')).first()
+    rider = Rider.query.filter(Rider.username == new_rider.username).first()
+    print(rider)
     session['user_id'] = rider.id
-    
-    return new_rider.to_dict(only=('username',)), 200
+    return new_rider.to_dict(only=('username','id')), 200
 
 
 @app.route('/api/plan_trip/<string:start_stop_id>/<string:end_stop_id>')

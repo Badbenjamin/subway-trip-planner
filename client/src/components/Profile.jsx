@@ -10,6 +10,7 @@ function Profile(){
                 setUser(null)
                 // why isnt this working?
                 navegate('/')
+                window.location.reload()
             }
         })
     }

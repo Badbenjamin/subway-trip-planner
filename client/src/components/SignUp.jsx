@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import Select from "react-select"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useOutletContext } from "react-router-dom"
 
 function SignUp(){
     const [username, setUserName] = useState('')
@@ -10,6 +10,10 @@ function SignUp(){
     const [stations, setStations] = useState([])
     const navegate = useNavigate()
     // const [selectedOption, setSelectedOption] = useState(null)
+
+    const {setUser, user} = useOutletContext()
+
+    // console.log(user)
 
     
     function handleSubmit(e){
@@ -37,8 +41,12 @@ function SignUp(){
             body: JSON.stringify(new_rider)
         })
         .then((response) => response.json())
-        .then((data) => console.log(data))
-        navegate('/profile');
+        // set session to id setUSer LEFT OFF HERE
+        .then((data) => setUser(data.id))
+        .then(navegate('/'))
+        
+        
+        
         
 
 

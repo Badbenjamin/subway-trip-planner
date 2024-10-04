@@ -17,10 +17,22 @@ function App() {
         // console.log(response.user)
         response.json().then((user) => setUser(user));
       } else {
-        console.log('user is not logged in')
+        console.log(response)
       }
     });
   }, [])
+
+  useEffect(() => {
+    fetch('/api/check_session')
+    .then((response) => {
+      if (response.ok) {
+        // console.log(response.user)
+        response.json().then((user) => setUser(user));
+      } else {
+        console.log(response)
+      }
+    });
+  }, [user])
 
   // console.log(user)
 
